@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README_ZH.md)
 
-EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，它集成了多个强大的工具和服务，能够帮助用户完成各种复杂的任务。
+EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，它集成了多个MCP工具和服务，能够帮助用户完成各种任务。
 
 ## 功能特点
 
