@@ -6,6 +6,7 @@ from src.config.logger import output_logger
 from src.workflow.agent import create_workflow
 from web_app.web_logger import web_logger
 from langchain_mcp_adapters.client import MultiServerMCPClient
+
 # 设置 Windows 上的事件循环策略
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
@@ -33,7 +34,6 @@ def pretty_print(event):
                 st.markdown(f"{step}")
     
     if "agent" in event:
-        output_logger.log("【执行结果】")
         st.session_state["messages"].append({"role": "assistant", "content": "【执行结果】"})
         with st.chat_message("assistant"):
             st.markdown("### 【执行结果】")
@@ -41,37 +41,32 @@ def pretty_print(event):
                 output_logger.log(f"步骤: {step}")
                 output_logger.log(f"结果: {result}")
                 st.session_state["messages"].append({"role": "assistant", "content": f"步骤: {step}\n结果: {result}"})
-                #with st.chat_message("assistant"):
                 st.markdown(f"步骤: {step}")
                 st.markdown(f"结果: {result}")
-
     
     if "replan" in event:
         if "plan" in event["replan"]:
-            output_logger.log("## 【重新规划任务】")
             st.session_state["messages"].append({"role": "assistant", "content": "【重新规划任务】"})
             with st.chat_message("assistant"):
                 st.markdown("### 【重新规划任务】")
                 for idx, step in enumerate(event["replan"]["plan"], 1):
                     output_logger.log(f"{step}")    
                     st.session_state["messages"].append({"role": "assistant", "content": f"{step}"})
-                    st.markdown(f"{step}")  
+                    st.markdown(f"{step}")
         if "response" in event["replan"]:
-            output_logger.log("【最终结果】")
             st.session_state["messages"].append({"role": "assistant", "content": "【最终结果】"})
             output_logger.log(f"{event['replan']['response']}")
-            st.session_state["messages"].append({"role": "assistant", "content": f"【最终结果】\n{event['replan']['response']}"})
+            st.session_state["messages"].append({"role": "assistant", "content": f"{event['replan']['response']}"})
             with st.chat_message("assistant"):
                 st.markdown("### 【最终结果】")
                 st.markdown(f"{event['replan']['response']}")
-                
 
 def main():
     # 设置页面配置
     st.set_page_config(page_title="FengAgent Web Interface", layout="wide")
 
     # 设置标题
-    st.title("🤖 FengAgent 智能体")
+    st.title("🤖 EasyAgent 智能体")
 
     # 初始化session state
     if "messages" not in st.session_state:
@@ -79,22 +74,13 @@ def main():
 
     # 创建主容器
     with st.container():
-        st.header("与 FengAgent 对话")
-        st.markdown("FengAgent 是一个基于Deepseek LLM的Plan-execute架构智能体Agent，具有网页搜索、股票查询与分析、地图查询与导航等功能")
+        st.header("给 EasyAgent 布置一个任务")
+        st.markdown("EasyAgent是一个基于Plan-execute架构Agent，接入网页搜索、股票查询与分析、地图查询导航等MCP工具")
         st.markdown("Author: YYF <small>from CMS Fintech Centre</small>", unsafe_allow_html=True)
 
         # 添加清空按钮
         add_clear_button()
-        
-        # 显示历史消息
-        for message in st.session_state["messages"]:
-            if message["role"] == "user":
-                with st.chat_message("user"):
-                    st.markdown(message["content"])
-            else:
-                with st.chat_message("assistant"):
-                    st.markdown(message["content"])
-        
+
         # 用户输入
         prompt = st.chat_input("请输入您的任务...")
         
@@ -125,7 +111,9 @@ def main():
         tools = client.get_tools()
 
         if prompt:
-            # 添加用户消息到历史记录
+            # 清空之前的内容
+            clear_previous_task()
+            
             st.session_state["messages"].append({"role": "user", "content": prompt})
             with st.chat_message("user"):
                 st.markdown(prompt)
@@ -145,14 +133,13 @@ def main():
 
     # 添加侧边栏说明
     with st.sidebar:
-        st.header("使用说明")
+        st.header("Note")
         st.markdown("""
         1. 在输入框中输入任务，如"帮我分析新能源领域的股票情况"
-        2. FengAgent会分析您的问题并任务规划
-        3. 在依次执行子任务的过程中，会基于当前任务结果进行重新规划            
+        2. EasyAgent会分析您的问题并进行任务规划
+        3. 在依次执行步骤的过程中，会基于当前任务结果进行重新规划            
         3. 您可以查看执行过程和最终结果
-        4. 所有对话历史都会被保存
-        5. 使用"清空内容"按钮可以清空当前页面所有内容
+        4. 点击"创建新任务"可以清空内容开始新任务
         """)
 
 if __name__ == "__main__":
