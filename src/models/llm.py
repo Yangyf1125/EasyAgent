@@ -1,9 +1,9 @@
 from langchain_deepseek import ChatDeepSeek
-from prompt import REACT_PROMPT, PLANNER_PROMPT, REPLANNER_PROMPT
+from src.models.prompt import REACT_PROMPT, PLANNER_PROMPT, REPLANNER_PROMPT
 from langchain_core.prompts import ChatPromptTemplate
 import os
 
-import streamlit as st
+
 
 os.environ["DEEPSEEK_API_KEY"] = "sk-2574248e129a44cbbb543c8ffcceeec8"
 
