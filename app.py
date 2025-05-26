@@ -18,7 +18,7 @@ def clear_previous_task():
 
 def add_clear_button():
     """添加一个清空按钮到界面"""
-    if st.button("清空内容", help="清空当前页面内容，创建新任务"):
+    if st.button("创建新任务", help="清空当前页面内容，创建新任务"):
         clear_previous_task()
         st.rerun()
 

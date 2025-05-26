@@ -1,5 +1,5 @@
 from langchain_deepseek import ChatDeepSeek
-from src.models.prompt import REACT_PROMPT, PLANNER_PROMPT, REPLANNER_PROMPT
+from .prompt import REACT_PROMPT, PLANNER_PROMPT, REPLANNER_PROMPT
 from langchain_core.prompts import ChatPromptTemplate
 import os
 
