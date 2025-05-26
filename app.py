@@ -77,6 +77,7 @@ def main():
         st.header("给 EasyAgent 布置一个任务")
         st.markdown("EasyAgent是一个基于Plan-execute架构Agent，接入网页搜索、股票查询与分析、地图查询导航等MCP工具")
         st.markdown("Author: YYF <small>from CMS Fintech Centre</small>", unsafe_allow_html=True)
+        st.markdown("<small>所有api_key设置页面仅用于测试，目前默认使用Deepseek-V3</small>", unsafe_allow_html=True)
 
         # 添加清空按钮
         add_clear_button()
