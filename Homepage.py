@@ -189,15 +189,13 @@ def main():
     with st.sidebar:
         st.header("Note")
         st.markdown("""
-        1. 在输入框中输入任务
-        2. EasyAgent会分析您的问题并进行任务规划           
-        3. 您可以查看执行过程和最终结果
-        4. 点击"创建新任务"可以清空内容开始新任务
-        5. "EasyAgent正在思考..."表示任务仍在进行，非流式输出下响应时间可能较长
-
+        1. 在输入框中输入，Agent会为您规划任务
+        2. "EasyAgent正在思考..."表示任务仍在进行，非流式输出下响应时间可能较长
+        3. 仅用于学习研究，不适用于实际交易
         """)
         st.markdown("---")
-        st.markdown("<p style='font-size: 12px;'><strong>Author:</strong> YYF, Intern from CMS Fintech Centre</p>", unsafe_allow_html=True)
+        #st.markdown("<p style='font-size: 14px;'><strong>Author:</strong> YYF, Intern from CMS Fintech Centre</p>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size: 14px;'><strong>Author:</strong> YYF, u3621301@connect.hku.hk</p>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main() 
