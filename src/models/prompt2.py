@@ -39,6 +39,7 @@ toolsuse="""
         - fetch: provides web content fetching capabilities. enables LLMs to retrieve and process content from web pages, converting HTML to markdown for easier consumption.
         - arxiv-mcp-server: Enable AI assistants to search and access arXiv papers through a simple MCP interface.
         - mcp-server-chart: provides chart generation capabilities. It allows you to create various types of charts through MCP tools
+        - python-repl: provides a Python REPL (Read-Eval-Print Loop) as a tool. It allows execution of Python code
         """
 REACT_PROMPT = """
 You are a professional task execution assistant responsible for carrying out specific tasks according to given plan steps. Please follow these guidelines:
@@ -193,7 +194,15 @@ REPLANNER_PROMPT = """
                     while receiving the task.
                 
                     2. This is a fully automated process - do not wait for or request user input, and user cannot input.
-                    3. The execution agent cannot see past results, so include necessary context in each step
+
+                    3. When planning new tasks, make an appropriate summary of the existing results, add necessary context because The execution agent cannot see past results
+                        For example, in the task "Search for the captain of the 2022 World Cup champion team", it will be planned into two steps: 
+                            (1) Search for the 2022 World Cup champion team, 
+                            (2) Search for the champion of this team. 
+                        The first step gets the name "Argentina", so when re-planning the second step, it is necessary 
+                        to add the required information in the previous step result before the task, such as "Argentina", 
+                        otherwise execute_agent cannot get which team captain should be searched.
+
                     4. Each step must be self-contained and executable without user interaction
 
                 please use Chinese.

@@ -147,6 +147,16 @@ def main():
                     "type": "sse",
                     "url": "https://mcp.api-inference.modelscope.cn/sse/2b2af34ca5794a"
                     },
+                "python-repl": {
+                    "command": "uv",
+                    "args": [
+                        "--directory",
+                        "/src/tool/mcp-python",
+                        "run",
+                        "mcp_python"
+                    ]
+                    },
+                
 
             }
 
