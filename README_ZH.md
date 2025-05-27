@@ -8,9 +8,10 @@ EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，
 
 - 🤖 基于 LangChain 和 LangGraph 的智能工作流
 - 🔧 集成多个实用MCP工具如：
-  - 高德地图服务
   - Tavily 搜索服务
   - AKShare 金融数据服务
+  - Arxiv 学术搜索服务
+  - 地图导航查询服务等
 - 📊 支持金融数据分析
 - 🗺️ 支持地理位置服务
 - 🔍 支持智能搜索

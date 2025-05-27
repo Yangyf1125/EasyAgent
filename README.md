@@ -8,9 +8,10 @@ EasyAgent is an intelligent agent system built on LangChain and LangGraph, integ
 
 - 🤖 Intelligent workflow based on LangChain and LangGraph
 - 🔧 Integration of multiple MCP tools such as:
-  - Amap service
   - Tavily search service
   - AKShare financial data service
+  - ArXiv's research repository
+  - Amap service
 - 📊 Financial data analysis support
 - 🗺️ Location-based services
 - 🔍 Intelligent search capabilities
