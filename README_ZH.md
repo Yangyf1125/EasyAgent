@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README_ZH.md)
 
-EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，它集成了多个强大的工具和服务，能够帮助用户完成各种复杂的任务。
+EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，它集成了实用的MCP工具和服务，能够帮助用户完成各种基本的任务。
 
 ## 功能特点
 
@@ -15,6 +15,7 @@ EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，
 - 🗺️ 支持地理位置服务
 - 🔍 支持智能搜索
 - 📝 详细的执行日志记录
+- 🎨 简洁直观的 Web 界面
 
 ## 系统要求
 
@@ -38,7 +39,7 @@ pip install -r requirements.txt
 
 EasyAgent 提供两种使用方式：命令行界面和 Web 界面。
 
-### 1. 命令行界面
+#### 1. 命令行界面
 
 1. 启动主程序：
 ```bash
@@ -47,13 +48,13 @@ python main.py
 
 2. 在命令行中输入你想要执行的任务，例如：
    - "请帮我分析新能源领域的股票"
-   - "查询北京到上海的路线"
+   - "查询上海豫园到人民广场的路线"
 
 3. 系统会自动调用相应的工具和服务来完成任务
 
 4. 输入 "exit" 可以退出程序
 
-### 2. Web 界面
+#### 2. Web 界面
 
 1. 启动 Web 服务：
 ```bash

@@ -38,11 +38,12 @@ def pretty_print(event):
         with st.chat_message("assistant"):
             st.markdown("### 【执行结果】")
             for step, result in event["agent"]["past_steps"]:
-                output_logger.log(f"步骤: {step}")
+                #output_logger.log(f"步骤: {step}")
                 output_logger.log(f"结果: {result}")
                 st.session_state["messages"].append({"role": "assistant", "content": f"步骤: {step}\n结果: {result}"})
-                st.markdown(f"步骤: {step}")
-                st.markdown(f"结果: {result}")
+                #st.markdown(f"步骤: {step}")
+                st.markdown(f"结果:")
+                st.markdown(f"{result}")
     
     if "replan" in event:
         if "plan" in event["replan"]:
@@ -63,7 +64,7 @@ def pretty_print(event):
 
 def main():
     # 设置页面配置
-    st.set_page_config(page_title="FengAgent Web Interface", layout="wide")
+    st.set_page_config(page_title="EasyAgent Web Interface", layout="wide")
 
     # 设置标题
     st.title("🤖 EasyAgent 智能体")
@@ -74,10 +75,10 @@ def main():
 
     # 创建主容器
     with st.container():
-        st.header("给 EasyAgent 布置一个任务")
-        st.markdown("EasyAgent是一个基于Plan-execute架构Agent，接入网页搜索、股票查询与分析、地图查询导航等MCP工具")
-        st.markdown("Author: YYF <small>from CMS Fintech Centre</small>", unsafe_allow_html=True)
-        st.markdown("<small>所有api_key设置页面仅用于测试，目前默认使用Deepseek-V3</small>", unsafe_allow_html=True)
+        st.header("Welcome!")
+        st.markdown("EasyAgent是一个基于langchain的Planning Agent，接入了网页搜索、股票查询、arxiv数据库等MCP工具")
+        #st.markdown("Author: YYF <small>from CMS Fintech Centre</small>", unsafe_allow_html=True)
+        st.markdown("<small>api_key设置页面尚未完善，目前默认使用Deepseek-V3</small>", unsafe_allow_html=True)
 
         # 添加清空按钮
         add_clear_button()
@@ -85,14 +86,27 @@ def main():
         # 用户输入
         prompt = st.chat_input("请输入您的任务...")
         
+        # 添加示例提示
+        with st.expander("💡 点击查看任务示例 "):
+            st.markdown("""
+            **股票分析：**
+            - 请帮我分析近期新能源股票的情况
+            - 帮我获取比亚迪的涨跌情况
+            - 分析一下近期的A股市场走势
+            
+            **查询搜索：**
+            - 帮我搜索和总结近两年关于大模型的高被引论文
+            - 目前热门的开源Agent框架有哪些？
+            """)
+        
         client = None
         client = MultiServerMCPClient(
             {
-                "math": {
-                    "command": "python",
-                    "args": ["D:/YangYufeng/zs/lang_learn/adapter/math_server.py"],
-                    "transport": "stdio",
-                },
+                # "math": {
+                #     "command": "python",
+                #     "args": ["D:/YangYufeng/zs/lang_learn/adapter/math_server.py"],
+                #     "transport": "stdio",
+                # },
                 "amap-amap-sse": {
                     "url": "https://mcp.amap.com/sse?key=1253cf9b3968fc48fd39b06b02fa5211",
                     "transport": "sse",
@@ -107,7 +121,36 @@ def main():
                     "command": "uvx",
                     "args": ["src/tool/mcp-akshare"],
                 },
+                "bing-cn-mcp-server": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/bf53f78667f54f"
+                    },
+                "akshare-one-mcp": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/2546d617f8e445"
+                    },
+
+                "mcp-yahoo-finance": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/44b98b6a7e8046"
+                    },
+                "fetch": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/5c537afd52804f"
+                    },
+
+                "arxiv-mcp-server": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/5da5bf0f0c604d"
+                    },
+                "mcp-server-chart": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/2b2af34ca5794a"
+                    },
+
             }
+
+            
         )
         tools = client.get_tools()
 
@@ -125,7 +168,7 @@ def main():
                 config = {"recursion_limit": 50}
                 inputs = {"input": prompt}
                 
-                with st.spinner("FengAgent正在思考..."):
+                with st.spinner("EasyAgent正在思考..."):
                     async for event in workflow.astream(inputs, config=config):
                         pretty_print(event)
             
@@ -136,12 +179,15 @@ def main():
     with st.sidebar:
         st.header("Note")
         st.markdown("""
-        1. 在输入框中输入任务，如"帮我分析新能源领域的股票情况"
-        2. EasyAgent会分析您的问题并进行任务规划
-        3. 在依次执行步骤的过程中，会基于当前任务结果进行重新规划            
+        1. 在输入框中输入任务
+        2. EasyAgent会分析您的问题并进行任务规划           
         3. 您可以查看执行过程和最终结果
         4. 点击"创建新任务"可以清空内容开始新任务
+        5. "EasyAgent正在思考..."表示任务仍在进行，非流式输出下响应时间可能较长
+
         """)
+        st.markdown("---")
+        st.markdown("<p style='font-size: 12px;'><strong>Author:</strong> YYF, Intern from CMS Fintech Centre</p>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main() 

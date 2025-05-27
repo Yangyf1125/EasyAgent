@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README_ZH.md)
 
-EasyAgent is an intelligent agent system built on LangChain and LangGraph, integrating multiple powerful tools and services to help users accomplish various complex tasks.
+EasyAgent is an intelligent agent system built on LangChain and LangGraph, integrating practical MCP tools and services to help users accomplish various basic tasks.
 
 ## Features
 
@@ -15,6 +15,7 @@ EasyAgent is an intelligent agent system built on LangChain and LangGraph, integ
 - 🗺️ Location-based services
 - 🔍 Intelligent search capabilities
 - 📝 Detailed execution logging
+- 🎨 Simple and intuitive web interface
 
 ## System Requirements
 

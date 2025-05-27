@@ -25,20 +25,15 @@ async def cleanup(client):
 
 async def main():
     # 只在主线程中注册信号处理
-    if threading.current_thread() is threading.main_thread():
-        signal.signal(signal.SIGINT, handle_interrupt)
-        signal.signal(signal.SIGTERM, handle_interrupt)
+    # if threading.current_thread() is threading.main_thread():
+    #     signal.signal(signal.SIGINT, handle_interrupt)
+    #     signal.signal(signal.SIGTERM, handle_interrupt)
     
     client = None
     try:
         output_logger.log("正在初始化MCP客户端...")
         client = MultiServerMCPClient(
             {
-                "math": {
-                    "command": "python",
-                    "args": ["D:/YangYufeng/zs/lang_learn/adapter/math_server.py"],
-                    "transport": "stdio",
-                },
                 "amap-amap-sse": {
                     "url": "https://mcp.amap.com/sse?key=1253cf9b3968fc48fd39b06b02fa5211",
                     "transport": "sse",
@@ -53,24 +48,56 @@ async def main():
                     "command": "uvx",
                     "args": ["src/tool/mcp-akshare"],
                 },
+                "bing-cn-mcp-server": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/bf53f78667f54f",
+                    "transport": "sse",
+                    },
+                "akshare-one-mcp": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/2546d617f8e445",
+                    "transport": "sse",
+                    },
+
+                "mcp-yahoo-finance": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/44b98b6a7e8046",
+                    "transport": "sse",
+                    },
+                "fetch": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/5c537afd52804f",
+                    "transport": "sse",
+                    },
+
+                "arxiv-mcp-server": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/5da5bf0f0c604d",
+                    "transport": "sse",
+                    },
+                "mcp-server-chart": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/2b2af34ca5794a",
+                    "transport": "sse",
+                    },
+                "time-mcp": {
+                    "type": "sse",
+                    "url": "https://mcp.api-inference.modelscope.cn/sse/5bd40c9faeea44",
+                    "transport": "sse",
+                    }
             }
         )
-        output_logger.log("MCP客户端初始化完成")
         
         async with client:
+            output_logger.log("MCP客户端初始化完成")
             output_logger.log("正在获取工具...")
             tools = client.get_tools()
+            import os
+            # from langchain_tavily import TavilySearch
+            # os.environ["TAVILY_API_KEY"]="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"
+            # tools +=[TavilySearch(max_results=5,topic="general")]
             output_logger.log(f"成功获取 {len(tools)} 个工具")
             
-            # output_logger.log("\n可用工具列表：")
-            # for i, tool in enumerate(tools, 1):
-            #     output_logger.log(f"\n{i}. 工具名称: {tool.name}")
-            #     output_logger.log(f"   描述: {tool.description}")
-            #     if hasattr(tool, 'args_schema'):
-            #         output_logger.log(f"   参数: {tool.args_schema.schema()}")
-            
-
-
             output_logger.log("正在创建工作流...")
             app = create_workflow(tools)
             output_logger.log("准备接收用户输入")
@@ -78,7 +105,7 @@ async def main():
             while True:
                 output_logger.log("\n" + "#" * 80)
                 config = {"recursion_limit": 50}
-                user_input = input("输入任务(输入exit退出)，如“请帮我分析新能源领域的股票\n您的任务： ")
+                user_input = input("输入任务(输入exit退出)，如“请帮我分析新能源领域的股票”\n您的任务： ")
                 if user_input == "exit":
                     output_logger.log("程序结束")
                     break
