@@ -19,6 +19,11 @@ class WorkflowManager:
         task_formatted = f"请执行以下任务:\n{task}"
         output_logger.log("")
         output_logger.log(f"【开始执行任务】: {task}")
+        ################################################################
+        past=state["past_steps"]
+        task_formatted  = f"已经完成的任务：\n{past}" + task_formatted
+        ##############################################################
+        
         agent_response = await self.agent_executor.ainvoke(
             {"messages": [("user", task_formatted)]}
         )

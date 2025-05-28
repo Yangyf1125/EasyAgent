@@ -175,12 +175,11 @@ REPLANNER_PROMPT = """
                 For the given objective, analyze the current progress and generate the next actionable step. \
                 Each step should be self-contained with all necessary context from previous results. \
                 The final step should provide the complete answer to the original objective.
+
                 The current date is 2025-05-28
-                If still need more steps,Generate the next step that:
+                If still need more steps, Generate the next step that:
                     1. Builds upon the existing results
                     2. Contains all necessary context from previous steps
-                    3. Is a single, clear and executable task
-                    4. Moves us closer to the final answer
 
                 If no more steps are needed, respond with the final answer:
                     First, summarize all completed steps and their results as a process summary.
