@@ -27,7 +27,7 @@ EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，
 
 1. 克隆项目到本地：
 ```bash
-git clone https://github.com/yourusername/EasyAgent.git
+git clone https://github.com/Yangyf1125/EasyAgent.git
 cd EasyAgent
 ```
 
@@ -59,7 +59,7 @@ python main.py
 
 1. 启动 Web 服务：
 ```bash
-streamlit run app.py
+streamlit Homepage app.py
 ```
 
 2. 在浏览器中打开终端显示的地址（例如 http://localhost:8501）

@@ -27,7 +27,7 @@ EasyAgent is an intelligent agent system built on LangChain and LangGraph, integ
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/EasyAgent.git
+git clone https://github.com/Yangyf1125/EasyAgent.git
 cd EasyAgent
 ```
 
@@ -59,7 +59,7 @@ python main.py
 
 1. Start the web service:
 ```bash
-streamlit run app.py
+streamlit run Homepage.py
 ```
 
 2. Open the address shown in the terminal (typically http://localhost:8501)
