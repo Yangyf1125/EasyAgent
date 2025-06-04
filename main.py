@@ -34,9 +34,9 @@ async def main():
         output_logger.log("正在初始化MCP客户端...")
         client = MultiServerMCPClient(
             {
-                "amap-amap-sse": {
-                    "url": "https://mcp.amap.com/sse?key=1253cf9b3968fc48fd39b06b02fa5211",
-                    "transport": "sse",
+                "mcp-akshare": {
+                    "command": "uvx",
+                    "args": ["src/tool/mcp-akshare"],
                 },
                 "tavily-mcp": {
                     "command": "npx",
@@ -44,10 +44,12 @@ async def main():
                     "env": {"TAVILY_API_KEY": "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"},
                     "autoApprove": []
                 },
-                "mcp-akshare": {
-                    "command": "uvx",
-                    "args": ["src/tool/mcp-akshare"],
+
+                "amap-amap-sse": {
+                    "url": "https://mcp.amap.com/sse?key=1253cf9b3968fc48fd39b06b02fa5211",
+                    "transport": "sse",
                 },
+
                 "bing-cn-mcp-server": {
                     "type": "sse",
                     "url": "https://mcp.api-inference.modelscope.cn/sse/bf53f78667f54f",
