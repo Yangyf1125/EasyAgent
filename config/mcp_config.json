@@ -1,0 +1,51 @@
+{
+    "amap-amap-sse": {
+        "url": "https://mcp.amap.com/sse?key=1253cf9b3968fc48fd39b06b02fa5211",
+        "transport": "sse"
+    },
+    "tavily-mcp": {
+        "command": "npx",
+        "args": ["-y", "tavily-mcp"],
+        "env": {
+            "TAVILY_API_KEY": "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"
+        },
+        "autoApprove": []
+    },
+    "mcp-akshare": {
+        "command": "uvx",
+        "args": ["src/tool/mcp-akshare"]
+    },
+    "bing-cn-mcp-server": {
+        "type": "sse",
+        "url": "https://mcp.api-inference.modelscope.cn/sse/bf53f78667f54f"
+    },
+    "akshare-one-mcp": {
+        "type": "sse",
+        "url": "https://mcp.api-inference.modelscope.cn/sse/2546d617f8e445"
+    },
+    "mcp-yahoo-finance": {
+        "type": "sse",
+        "url": "https://mcp.api-inference.modelscope.cn/sse/44b98b6a7e8046"
+    },
+    "fetch": {
+        "type": "sse",
+        "url": "https://mcp.api-inference.modelscope.cn/sse/5c537afd52804f"
+    },
+    "arxiv-mcp-server": {
+        "type": "sse",
+        "url": "https://mcp.api-inference.modelscope.cn/sse/5da5bf0f0c604d"
+    },
+    "mcp-server-chart": {
+        "type": "sse",
+        "url": "https://mcp.api-inference.modelscope.cn/sse/2b2af34ca5794a"
+    },
+    "python-repl": {
+        "command": "uv",
+        "args": [
+            "--directory",
+            "/src/tool/mcp-python",
+            "run",
+            "mcp_python"
+        ]
+    }
+}

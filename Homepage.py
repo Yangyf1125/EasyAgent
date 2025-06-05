@@ -6,7 +6,7 @@ from src.config.logger import output_logger
 from src.workflow.agent import create_workflow
 from web_app.web_logger import web_logger
 from langchain_mcp_adapters.client import MultiServerMCPClient
-
+import json
 # 设置 Windows 上的事件循环策略
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
@@ -62,6 +62,15 @@ def pretty_print(event):
                 st.markdown("### 【最终结果】")
                 st.markdown(f"{event['replan']['response']}")
 
+def load_mcp_config():
+    """加载MCP配置文件"""
+    try:
+        with open('config/mcp_config.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        st.error(f"加载MCP配置文件失败: {str(e)}")
+        return {}
+
 def main():
     # 设置页面配置
     st.set_page_config(page_title="EasyAgent Web Interface", layout="wide")
@@ -99,69 +108,72 @@ def main():
             - 目前热门的开源Agent框架有哪些？
             """)
         
-        client = None
-        client = MultiServerMCPClient(
-            {
-                # "math": {
-                #     "command": "python",
-                #     "args": ["D:/YangYufeng/zs/lang_learn/adapter/math_server.py"],
-                #     "transport": "stdio",
-                # },
-                "amap-amap-sse": {
-                    "url": "https://mcp.amap.com/sse?key=1253cf9b3968fc48fd39b06b02fa5211",
-                    "transport": "sse",
-                },
-                "tavily-mcp": {
-                    "command": "npx",
-                    "args": ["-y", "tavily-mcp"],
-                    "env": {"TAVILY_API_KEY": "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"},
-                    "autoApprove": []
-                },
-                "mcp-akshare": {
-                    "command": "uvx",
-                    "args": ["src/tool/mcp-akshare"],
-                },
-                "bing-cn-mcp-server": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/bf53f78667f54f"
-                    },
-                "akshare-one-mcp": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/2546d617f8e445"
-                    },
+        # 加载MCP配置
+        mcp_config = load_mcp_config()
+        client = MultiServerMCPClient(mcp_config)
+        # client = None
+        # client = MultiServerMCPClient(
+        #     {
+        #         # "math": {
+        #         #     "command": "python",
+        #         #     "args": ["D:/YangYufeng/zs/lang_learn/adapter/math_server.py"],
+        #         #     "transport": "stdio",
+        #         # },
+        #         "amap-amap-sse": {
+        #             "url": "https://mcp.amap.com/sse?key=1253cf9b3968fc48fd39b06b02fa5211",
+        #             "transport": "sse",
+        #         },
+        #         "tavily-mcp": {
+        #             "command": "npx",
+        #             "args": ["-y", "tavily-mcp"],
+        #             "env": {"TAVILY_API_KEY": "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"},
+        #             "autoApprove": []
+        #         },
+        #         "mcp-akshare": {
+        #             "command": "uvx",
+        #             "args": ["src/tool/mcp-akshare"],
+        #         },
+        #         "bing-cn-mcp-server": {
+        #             "type": "sse",
+        #             "url": "https://mcp.api-inference.modelscope.cn/sse/bf53f78667f54f"
+        #             },
+        #         "akshare-one-mcp": {
+        #             "type": "sse",
+        #             "url": "https://mcp.api-inference.modelscope.cn/sse/2546d617f8e445"
+        #             },
 
-                "mcp-yahoo-finance": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/44b98b6a7e8046"
-                    },
-                "fetch": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/5c537afd52804f"
-                    },
+        #         "mcp-yahoo-finance": {
+        #             "type": "sse",
+        #             "url": "https://mcp.api-inference.modelscope.cn/sse/44b98b6a7e8046"
+        #             },
+        #         "fetch": {
+        #             "type": "sse",
+        #             "url": "https://mcp.api-inference.modelscope.cn/sse/5c537afd52804f"
+        #             },
 
-                "arxiv-mcp-server": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/5da5bf0f0c604d"
-                    },
-                "mcp-server-chart": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/2b2af34ca5794a"
-                    },
-                "python-repl": {
-                    "command": "uv",
-                    "args": [
-                        "--directory",
-                        "/src/tool/mcp-python",
-                        "run",
-                        "mcp_python"
-                    ]
-                    },
+        #         "arxiv-mcp-server": {
+        #             "type": "sse",
+        #             "url": "https://mcp.api-inference.modelscope.cn/sse/5da5bf0f0c604d"
+        #             },
+        #         "mcp-server-chart": {
+        #             "type": "sse",
+        #             "url": "https://mcp.api-inference.modelscope.cn/sse/2b2af34ca5794a"
+        #             },
+        #         "python-repl": {
+        #             "command": "uv",
+        #             "args": [
+        #                 "--directory",
+        #                 "/src/tool/mcp-python",
+        #                 "run",
+        #                 "mcp_python"
+        #             ]
+        #             },
                 
 
-            }
+        #     }
 
             
-        )
+        # )
         tools = client.get_tools()
 
         if prompt:

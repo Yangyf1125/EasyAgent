@@ -2,16 +2,17 @@ from langchain_deepseek import ChatDeepSeek
 from .prompt2 import REACT_PROMPT, PLANNER_PROMPT, REPLANNER_PROMPT
 from langchain_core.prompts import ChatPromptTemplate
 import os
+import streamlit as st
 
 
 
-os.environ["DEEPSEEK_API_KEY"] = "sk-2574248e129a44cbbb543c8ffcceeec8"
+os.environ["DEEPSEEK_API_KEY"] = "sk-95de50fc5a6744a8bb766e4b1e53af7c"
 
 
 llm = ChatDeepSeek(
     model="deepseek-chat", 
     base_url="https://api.deepseek.com",
-    api_key="sk-2574248e129a44cbbb543c8ffcceeec8",
+    api_key="sk-95de50fc5a6744a8bb766e4b1e53af7c",
     temperature=0
 )
 
