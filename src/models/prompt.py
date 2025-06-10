@@ -109,9 +109,7 @@ REPLANNER_PROMPT = """
                        - Issues encountered and solutions
                     
                     2. Final Answer:
-                       - Complete solution
-                       - Supporting evidence
-                       - Key assumptions
+                       - Provide the complete answer to the original objective.
                     
 
                 
