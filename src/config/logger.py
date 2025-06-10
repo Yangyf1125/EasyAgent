@@ -11,16 +11,8 @@ class OutputLogger:
         self.logger = logging.getLogger('execution_logger')
         self.logger.setLevel(logging.INFO)
         
-        # 创建文件处理器，指定UTF-8编码
-        file_handler = logging.FileHandler(self.log_file, encoding='utf-8')
-        file_handler.setLevel(logging.INFO)
-        
         # 设置日志格式
         formatter = logging.Formatter('%(asctime)s - %(message)s')
-        file_handler.setFormatter(formatter)
-        
-        # 添加处理器
-        self.logger.addHandler(file_handler)
         
     def log(self, message):
         """记录日志信息"""
@@ -34,7 +26,7 @@ output_logger = OutputLogger()
 
 # 配置连接日志
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='mcp_connection.log'
+    #level=logging.INFO,
+    level=logging.WARNING,
+    format='%(asctime)s - %(levelname)s - %(message)s'
 ) 
