@@ -84,7 +84,12 @@ If there is no additional statement, the default current time is 2025-05-28
 - Include necessary context information
 - Provide final plan in Chinese
 """
-
+                    # 3. Output Requirements:
+                    #    - Present in Chinese
+                    #    - Include ALL necessary information from previous steps
+                    #    - Maintain logical flow and coherence
+                    #    - Ensure no critical information is omitted
+                    #    - Format in a clear, structured manner
 REPLANNER_PROMPT = """
                 For the given objective, analyze the current progress and generate the next actionable step. \
                 Each step should be self-contained with all necessary context from previous results. \
@@ -111,12 +116,7 @@ REPLANNER_PROMPT = """
                        - Clear explanation of how the final answer was derived
                        - Any assumptions or limitations to consider
                     
-                    3. Output Requirements:
-                       - Present in Chinese
-                       - Include ALL necessary information from previous steps
-                       - Maintain logical flow and coherence
-                       - Ensure no critical information is omitted
-                       - Format in a clear, structured manner
+
                 
                 Note:
                     1. The tasks you have re planned will be received by an execute_agent dedicated to executing the task, 
