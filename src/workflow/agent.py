@@ -1,7 +1,7 @@
 from langgraph.prebuilt import create_react_agent
 from langgraph.graph import StateGraph, START, END
 from src.config.logger import output_logger
-from src.models.llm import llm, prompt, planner_prompt, replanner_prompt
+from src.models.llm import llm, get_prompt, get_planner_prompt, get_replanner_prompt
 from src.types.models import PlanExecute, Plan, Act, Response
 import traceback
 
@@ -15,9 +15,12 @@ class WorkflowManager:
         if not self.agent_executor:
             raise RuntimeError("Agent executor not initialized")
             
+        past=state["past_steps"]
+        past_formatted  = f"已经完成的任务：\n{past}\n"
         task = state["plan"][0]
-        task_formatted = f"请执行以下任务:\n{task}"
+        task_formatted = past_formatted + f"请执行以下任务:\n{task}"
         output_logger.log("")
+        #output_logger.log(f"目前完成的任务：{past_formatted}")
         output_logger.log(f"【开始执行任务】: {task}")
         agent_response = await self.agent_executor.ainvoke(
             {"messages": [("user", task_formatted)]}
@@ -82,16 +85,17 @@ class WorkflowManager:
                 output_logger.log("【最终结果】")
                 output_logger.log(f"{event['replan']['response']}")
 
-    def create_workflow(self, tools):
+    def create_workflow(self, tools, enabled_services):
         try:
             output_logger.log("正在初始化Agent执行器...")
+            prompt = get_prompt(enabled_services)
             self.agent_executor = create_react_agent(llm, tools, prompt=prompt)
             
             output_logger.log("正在初始化规划器...")
-            self.planner = planner_prompt | llm.with_structured_output(Plan)
+            self.planner = get_planner_prompt() | llm.with_structured_output(Plan)
             
             output_logger.log("正在初始化重规划器...")
-            self.replanner = replanner_prompt | llm.with_structured_output(Act)
+            self.replanner = get_replanner_prompt() | llm.with_structured_output(Act)
 
             output_logger.log("正在创建工作流图...")
             workflow = StateGraph(PlanExecute)

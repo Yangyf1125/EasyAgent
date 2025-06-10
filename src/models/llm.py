@@ -1,5 +1,5 @@
 from langchain_deepseek import ChatDeepSeek
-from .prompt2 import REACT_PROMPT, PLANNER_PROMPT, REPLANNER_PROMPT
+from .prompt import REACT_PROMPT, PLANNER_PROMPT, REPLANNER_PROMPT, get_tools_description
 from langchain_core.prompts import ChatPromptTemplate
 import os
 import json
@@ -29,12 +29,18 @@ llm = ChatDeepSeek(
     temperature=deepseek_config.get('temperature', 0)
 )
 
-# 初始化提示词模板
-prompt = REACT_PROMPT
+def get_prompt(enabled_services):
+    """根据启用的服务生成prompt"""
+    tools_description = get_tools_description(enabled_services)
+    return REACT_PROMPT.format(tools_description)
 
-planner_prompt = ChatPromptTemplate.from_messages([
-    ("system", PLANNER_PROMPT),
-    ("placeholder", "{messages}"),
-])
+def get_planner_prompt():
+    """获取规划器prompt"""
+    return ChatPromptTemplate.from_messages([
+        ("system", PLANNER_PROMPT),
+        ("placeholder", "{messages}"),
+    ])
 
-replanner_prompt = ChatPromptTemplate.from_template(REPLANNER_PROMPT) 
+def get_replanner_prompt():
+    """获取重规划器prompt"""
+    return ChatPromptTemplate.from_template(REPLANNER_PROMPT) 
