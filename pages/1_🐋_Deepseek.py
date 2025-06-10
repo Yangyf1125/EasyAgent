@@ -44,7 +44,7 @@ with st.form(key="deepseek_settings_form"):
         "API Key", 
         value=st.session_state["DEEPSEEK_CONFIG"]["api_key"],
         type="password",
-        disabled=True,
+        disabled=False,
         help="输入您的Deepseek API密钥"
     )
     
