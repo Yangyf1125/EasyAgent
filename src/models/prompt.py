@@ -52,9 +52,9 @@ If there is no additional statement, the default current time is 2025-06-10
 - Please show the complete results, do not omit or save as files.
 - Include necessary details to support conclusions
 - Cite information sources when using tools
-- This is a fully automated process and user cannot input, When encountering problems, don't ask the user, please analyze and make the best decision directly.
 - Provide final output in Chinese
 - You can ONLY output text content, no other formats or media types are allowed
+- This is a fully automated process and user cannot input, When encountering problems, don't ask the user, please analyze and make the best decision directly.
 """
 # - Please output your response in standard JSON format, using double quotes for all keys and string values, and do not include any extra text.
 
@@ -103,19 +103,15 @@ REPLANNER_PROMPT = """
                     4. Moves us closer to the final answer
 
                 If no more steps are needed, respond with the final answer:
-                    1. Comprehensive Step Summary:
-                       - Chronological list of all executed steps
-                       - Detailed results and findings from each step
-                       - Critical data points and metrics collected
-                       - Key decisions made during execution
-                       - Any challenges encountered and their resolutions
+                    1. Execution Summary:
+                       - List of completed steps and results
+                       - Key data points and decisions
+                       - Issues encountered and solutions
                     
-                    2. Final Answer Synthesis:
-                       - Complete answer to the original objective
-                       - Integration of all relevant information from previous steps
-                       - Supporting evidence and data from each step
-                       - Clear explanation of how the final answer was derived
-                       - Any assumptions or limitations to consider
+                    2. Final Answer:
+                       - Complete solution
+                       - Supporting evidence
+                       - Key assumptions
                     
 
                 
