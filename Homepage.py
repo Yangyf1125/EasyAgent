@@ -7,9 +7,24 @@ from src.workflow.agent import create_workflow
 from web_app.web_logger import web_logger
 from langchain_mcp_adapters.client import MultiServerMCPClient
 import json
+import os
+
 # 设置 Windows 上的事件循环策略
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
+def check_api_key():
+    """检查是否设置了API key"""
+    config_path = os.path.join('config', 'llm_config.json')
+    if not os.path.exists(config_path):
+        return False
+    
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            return bool(config.get('deepseek', {}).get('api_key'))
+    except:
+        return False
 
 def clear_previous_task():
     """清空上一个任务的内容"""
@@ -38,10 +53,8 @@ def pretty_print(event):
         with st.chat_message("assistant"):
             st.markdown("### 【执行结果】")
             for step, result in event["agent"]["past_steps"]:
-                #output_logger.log(f"步骤: {step}")
                 output_logger.log(f"结果: {result}")
                 st.session_state["messages"].append({"role": "assistant", "content": f"步骤: {step}\n结果: {result}"})
-                #st.markdown(f"步骤: {step}")
                 st.markdown(f"结果:")
                 st.markdown(f"{result}")
     
@@ -86,8 +99,12 @@ def main():
     with st.container():
         st.header("Welcome!")
         st.markdown("EasyAgent是一个基于langchain的Planning Agent，接入了网页搜索、股票查询、arxiv数据库等MCP工具")
-        #st.markdown("Author: YYF <small>from CMS Fintech Centre</small>", unsafe_allow_html=True)
-        st.markdown("<small>api_key设置页面尚未完善，目前默认使用Deepseek-V3</small>", unsafe_allow_html=True)
+        
+        # 检查API key
+        if not check_api_key():
+            st.warning("⚠️ 请先在设置页面配置您的Deepseek API Key")
+            st.markdown("请点击左侧导航栏的 🐋 Deepseek Settings 进行配置")
+            return
 
         # 添加清空按钮
         add_clear_button()
@@ -111,69 +128,7 @@ def main():
         # 加载MCP配置
         mcp_config = load_mcp_config()
         client = MultiServerMCPClient(mcp_config)
-        # client = None
-        # client = MultiServerMCPClient(
-        #     {
-        #         # "math": {
-        #         #     "command": "python",
-        #         #     "args": ["D:/YangYufeng/zs/lang_learn/adapter/math_server.py"],
-        #         #     "transport": "stdio",
-        #         # },
-        #         "amap-amap-sse": {
-        #             "url": "https://mcp.amap.com/sse?key=1253cf9b3968fc48fd39b06b02fa5211",
-        #             "transport": "sse",
-        #         },
-        #         "tavily-mcp": {
-        #             "command": "npx",
-        #             "args": ["-y", "tavily-mcp"],
-        #             "env": {"TAVILY_API_KEY": "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"},
-        #             "autoApprove": []
-        #         },
-        #         "mcp-akshare": {
-        #             "command": "uvx",
-        #             "args": ["src/tool/mcp-akshare"],
-        #         },
-        #         "bing-cn-mcp-server": {
-        #             "type": "sse",
-        #             "url": "https://mcp.api-inference.modelscope.cn/sse/bf53f78667f54f"
-        #             },
-        #         "akshare-one-mcp": {
-        #             "type": "sse",
-        #             "url": "https://mcp.api-inference.modelscope.cn/sse/2546d617f8e445"
-        #             },
 
-        #         "mcp-yahoo-finance": {
-        #             "type": "sse",
-        #             "url": "https://mcp.api-inference.modelscope.cn/sse/44b98b6a7e8046"
-        #             },
-        #         "fetch": {
-        #             "type": "sse",
-        #             "url": "https://mcp.api-inference.modelscope.cn/sse/5c537afd52804f"
-        #             },
-
-        #         "arxiv-mcp-server": {
-        #             "type": "sse",
-        #             "url": "https://mcp.api-inference.modelscope.cn/sse/5da5bf0f0c604d"
-        #             },
-        #         "mcp-server-chart": {
-        #             "type": "sse",
-        #             "url": "https://mcp.api-inference.modelscope.cn/sse/2b2af34ca5794a"
-        #             },
-        #         "python-repl": {
-        #             "command": "uv",
-        #             "args": [
-        #                 "--directory",
-        #                 "/src/tool/mcp-python",
-        #                 "run",
-        #                 "mcp_python"
-        #             ]
-        #             },
-                
-
-        #     }
-
-            
-        # )
         tools = client.get_tools()
 
         if prompt:
@@ -197,6 +152,10 @@ def main():
             # 在 Streamlit 中运行异步代码
             asyncio.run(run_agent_async())
 
+
+            """
+            布局（五位一体、四个全面），改革（一制两治）、法治（两个建设）、经济（三新一高）、强军（听能作）、外交（国内世界）、治党（六个建设）
+            """
     # 添加侧边栏说明
     with st.sidebar:
         st.header("Note")
@@ -206,7 +165,6 @@ def main():
         3. 仅用于学习研究，不适用于实际交易
         """)
         st.markdown("---")
-        #st.markdown("<p style='font-size: 14px;'><strong>Author:</strong> YYF, Intern from CMS Fintech Centre</p>", unsafe_allow_html=True)
         st.markdown("<p style='font-size: 14px;'><strong>Author:</strong> YYF, u3621301@connect.hku.hk</p>", unsafe_allow_html=True)
 
 if __name__ == "__main__":

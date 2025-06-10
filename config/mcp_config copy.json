@@ -35,7 +35,10 @@
         "type": "sse",
         "url": "https://mcp.api-inference.modelscope.cn/sse/5da5bf0f0c604d"
     },
-
+    "mcp-server-chart": {
+        "type": "sse",
+        "url": "https://mcp.api-inference.modelscope.cn/sse/2b2af34ca5794a"
+    },
     "python-repl": {
         "command": "uv",
         "args": [
