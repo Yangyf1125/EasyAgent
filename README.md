@@ -2,28 +2,27 @@
 
 [English](README.md) | [简体中文](README_ZH.md)
 
-EasyAgent is an intelligent agent system built on LangChain and LangGraph, integrating practical MCP tools and services to help users accomplish various basic tasks.
+EasyAgent is a beginner-friendly intelligent agent system built on LangChain and LangGraph, integrating various practical MCP tools and services to help users complete various basic tasks.
 
-## Features
+## ✨ Main Features
 
 - 🤖 Intelligent workflow based on LangChain and LangGraph
-- 🔧 Integration of multiple MCP tools such as:
+- 🔧 Integration of multiple MCP tools and services:
   - Tavily search service
   - AKShare financial data service
-  - ArXiv's research repository
-  - Amap service
+  - ArXiv research paper library
+  - Amap geographic service
+  - Yahoo Finance financial data
 - 📊 Financial data analysis support
-- 🗺️ Location-based services
 - 🔍 Intelligent search capabilities
-- 📝 Detailed execution logging
 - 🎨 Simple and intuitive web interface
 
-## System Requirements
+## 🚀 System Requirements
 
 - Python 3.12
 - Node.js (optional, for running certain MCP services)
 
-## Installation
+## 📦 Installation Steps
 
 1. Clone the repository:
 ```bash
@@ -36,65 +35,54 @@ cd EasyAgent
 pip install -r requirements.txt
 ```
 
-## Usage
+## 💻 Usage
 
-EasyAgent provides two ways to use: Command Line Interface (CLI) and Web Interface.
+EasyAgent provides a simple web interface that can be deployed locally or accessed directly through the [web service](https://easyagentyyf.streamlit.app)
 
-### 1. Command Line Interface
-
-1. Start the main program:
-```bash
-python main.py
-```
-
-2. Enter your task in the command line, for example:
-   - "Please analyze stocks in the new energy sector"
-   - "Find the route from Beijing to Shanghai"
-
-3. The system will automatically call the appropriate tools and services to complete the task
-
-4. Type "exit" to quit the program
-
-### 2. Web Interface
+#### Web Interface
 
 1. Start the web service:
 ```bash
 streamlit run Homepage.py
 ```
 
-2. Open the address shown in the terminal (typically http://localhost:8501)
+2. Open the address shown in the terminal (e.g., http://localhost:8501)
 
 3. Enter your task in the web interface, and the system will process and display the results
 
-4. The web interface provides a more user-friendly experience with visual presentations
+4. The web interface provides a more user-friendly experience and visual presentation
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 EasyAgent/
 ├── src/                # Source code directory
-├── web_app/           # Web application files
-├── pages/             # Page files
+│   ├── config/        # Configuration files
+│   ├── workflow/      # Workflow related code
+│   └── tool/          # Tool implementations
+├── pages/             # Web page files
+├── config/            # Configuration directory
 ├── main.py            # CLI entry point
-├── app.py             # Web interface entry point
+├── Homepage.py        # Web interface entry point
 ├── requirements.txt   # Python dependencies
 └── README.md         # Project documentation
 ```
 
-## Notes
+## ⚠️ Notes
 
-- Make sure all necessary API keys are properly configured before use
+- Please ensure all necessary API keys are properly configured before use
 - Some features require internet connection
-- It's recommended to run the project in a virtual environment
+- It is recommended to run the project in a virtual environment
+- Make sure all necessary dependencies are installed
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## Contributing
+## 🤝 Contributing
 
 Issues and Pull Requests are welcome to help improve the project.
 
-## Contact
+## 📧 Contact
 
-yangyf1125@gmail.com 
+u3621301@connect.hku.hk 

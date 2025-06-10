@@ -2,30 +2,29 @@
 
 [English](README.md) | [简体中文](README_ZH.md)
 
-EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，它集成了实用的MCP工具和服务，能够帮助用户完成各种基本的任务。
+EasyAgent 是一个基于 LangChain 和 LangGraph 构建的入门级智能代理系统，集成了多种实用的 MCP 工具和服务，帮助用户完成各种基础任务。
 
-## 功能特点
+## ✨ 主要特性
 
 - 🤖 基于 LangChain 和 LangGraph 的智能工作流
-- 🔧 集成多个实用MCP工具如：
+- 🔧 集成多种 MCP 工具和服务：
   - Tavily 搜索服务
   - AKShare 金融数据服务
-  - Arxiv 学术搜索服务
-  - 地图导航查询服务等
-- 📊 支持金融数据分析
-- 🗺️ 支持地理位置服务
-- 🔍 支持智能搜索
-- 📝 详细的执行日志记录
+  - ArXiv 研究论文库
+  - 高德地理服务
+  - Yahoo Finance 金融数据等
+- 📊 金融数据分析支持
+- 🔍 智能搜索能力
 - 🎨 简洁直观的 Web 界面
 
-## 系统要求
+## 🚀 系统要求
 
 - Python 3.12
-- Node.js (可选，用于运行某些 MCP 服务)
+- Node.js（可选，用于运行某些 MCP 服务）
 
-## 安装步骤
+## 📦 安装步骤
 
-1. 克隆项目到本地：
+1. 克隆仓库：
 ```bash
 git clone https://github.com/Yangyf1125/EasyAgent.git
 cd EasyAgent
@@ -36,66 +35,56 @@ cd EasyAgent
 pip install -r requirements.txt
 ```
 
-## 使用方法
+## 💻 使用方法
 
-EasyAgent 提供两种使用方式：命令行界面和 Web 界面。
+EasyAgent 提供一个简易的 Web 界面，可在本地部署或是直接访问部署到服务器的[网页端服务](https://easyagentyyf.streamlit.app)
 
-#### 1. 命令行界面
-
-1. 启动主程序：
-```bash
-python main.py
-```
-
-2. 在命令行中输入你想要执行的任务，例如：
-   - "请帮我分析新能源领域的股票"
-   - "查询上海豫园到人民广场的路线"
-
-3. 系统会自动调用相应的工具和服务来完成任务
-
-4. 输入 "exit" 可以退出程序
-
-#### 2. Web 界面
+#### Web 界面
 
 1. 启动 Web 服务：
 ```bash
-streamlit Homepage app.py
+streamlit run Homepage.py
 ```
 
-2. 在浏览器中打开终端显示的地址（例如 http://localhost:8501）
+2. 打开终端显示的地址（例如 http://localhost:8501）
 
-3. 在 Web 界面中输入任务，系统会自动处理并显示结果
+3. 在 Web 界面中输入您的任务，系统会处理并显示结果
 
-4. Web 界面提供了更友好的交互体验和可视化展示
+4. Web 界面提供更友好的用户体验和可视化展示
 
-## 项目结构
+## 📁 项目结构
 
 ```
 EasyAgent/
 ├── src/                # 源代码目录
-├── web_app/           # Web 应用相关文件
-├── pages/             # 页面文件
-├── main.py            # 命令行界面入口
-├── app.py             # Web 界面入口
+│   ├── config/        # 配置文件
+│   ├── workflow/      # 工作流相关代码
+│   └── tool/          # 工具实现
+├── pages/             # Web 页面文件
+├── config/            # 配置文件目录
+├── main.py            # CLI 入口点
+├── Homepage.py        # Web 界面入口点
 ├── requirements.txt   # Python 依赖
-└── README.md         # 项目说明文档
+└── README.md         # 项目文档
 ```
 
-## 注意事项
+## ⚠️ 注意事项
 
-- 使用前请确保已正确配置所有必要的 API 密钥
-- 部分功能需要网络连接
+- 使用前请确保所有必要的 API 密钥已正确配置
+- 部分功能需要互联网连接
 - 建议在虚拟环境中运行项目
+- 确保系统已安装所有必要的依赖
 
-## 许可证
+## 📄 许可证
 
-本项目采用 MIT 许可证。查看 [LICENSE](LICENSE) 文件了解更多详情。
+本项目采用 MIT 许可证。详情请参见 [LICENSE](LICENSE) 文件。
 
-## 贡献指南
+## 🤝 贡献指南
 
 欢迎提交 Issue 和 Pull Request 来帮助改进项目。
 
-## 联系方式
+## 📧 联系方式
 
-yangyf1125@gmail.com
+u3621301@connect.hku.hk
+
 
