@@ -54,6 +54,7 @@ If there is no additional statement, the default current time is 2025-06-10
 - Cite information sources when using tools
 - This is a fully automated process and user cannot input, When encountering problems, don't ask the user, please analyze and make the best decision directly.
 - Provide final output in Chinese
+- You can ONLY output text content, no other formats or media types are allowed
 """
 # - Please output your response in standard JSON format, using double quotes for all keys and string values, and do not include any extra text.
 
