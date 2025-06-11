@@ -40,19 +40,19 @@ st.title("Deepseek Settings")
 # 创建表单
 with st.form(key="deepseek_settings_form"):
     # 使用session_state来控制输入框的值
-    api_key = st.text_input(
-        "API Key", 
-        value=st.session_state["DEEPSEEK_CONFIG"]["api_key"],
-        type="password",
-        disabled=False,
-        help="输入您的Deepseek API密钥"
-    )
+    # api_key = st.text_input(
+    #     "API Key", 
+    #     value=st.session_state["DEEPSEEK_CONFIG"]["api_key"],
+    #     #type="password",
+    #     disabled=True,
+    #     help="输入您的Deepseek API密钥"
+    # )
     
     # 显示当前API key的最后6位
     current_api_key = st.session_state["DEEPSEEK_CONFIG"]["api_key"]
     if current_api_key:
         masked_key = "****" + current_api_key[-6:] if len(current_api_key) >= 6 else "****" + current_api_key
-        st.caption(f"当前使用的API Key: {masked_key}")
+        st.caption(f"当前使用的API Key: {masked_key},公共web无需修改api_key")
     
     base_url = st.text_input(
         "Base URL",
@@ -89,7 +89,7 @@ with st.form(key="deepseek_settings_form"):
     if submit_button:
         # 更新session state
         st.session_state["DEEPSEEK_CONFIG"] = {
-            "api_key": api_key,
+            "api_key": "sk-a31ca91a3d624c27a9406d9a9596b882",
             "base_url": "https://api.deepseek.com",  # 保持默认值
             "model": "deepseek-chat",  # 保持默认值
             "temperature": float(temperature)  # 确保保存的是float类型
