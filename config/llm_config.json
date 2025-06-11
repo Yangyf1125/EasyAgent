@@ -1,6 +1,6 @@
 {
     "deepseek": {
-        "api_key": "sk-2d96a9e29e3849899161c73dbd5264ca",
+        "api_key": "<your api key>",
         "base_url": "https://api.deepseek.com",
         "model": "deepseek-chat",
         "temperature": 0.0
