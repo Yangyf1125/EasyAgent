@@ -1,138 +1,152 @@
 import asyncio
 import sys
-import signal
-import threading
-import traceback
+import json
+import os
+from datetime import datetime
+from src.workflow.agent import create_workflow
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from src.config.logger import output_logger
-from src.workflow.agent import create_workflow, pretty_print
 
 # 设置 Windows 上的事件循环策略
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 
-def handle_interrupt(signum, frame):
-    """处理中断信号"""
-    output_logger.log(f"收到中断信号 {signum}, 正在终止程序...")
-    raise KeyboardInterrupt
-
-async def cleanup(client):
-    """清理资源"""
+def check_api_key():
+    """检查是否设置了API key"""
+    config_path = os.path.join('config', 'llm_config.json')
+    if not os.path.exists(config_path):
+        return False
+    
     try:
-        output_logger.log("MCP连接已关闭")
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+            return bool(config.get('deepseek', {}).get('api_key'))
+    except:
+        return False
+
+def if_api_valid():
+    """检查API key是否有效"""
+    config_path = os.path.join('config', 'llm_config.json')
+    if not os.path.exists(config_path):
+        return False
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = json.load(f)
+        api_key = config.get('deepseek', {}).get('api_key')
+    return api_key.startswith('sk-')
+
+def load_mcp_config():
+    """加载MCP配置文件"""
+    try:
+        with open('config/mcp_config.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
     except Exception as e:
-        output_logger.log(f"关闭连接时出错: {str(e)}")
+        output_logger.log(f"加载MCP配置文件失败: {str(e)}")
+        return {}
+
+def print_examples():
+    """打印示例任务"""
+    output_logger.log("\n💡 任务示例：")
+    output_logger.log("\n股票分析：")
+    output_logger.log("- 请帮我分析近期新能源股票的情况")
+    output_logger.log("- 帮我获取比亚迪的涨跌情况")
+    output_logger.log("- 分析一下近期的A股市场走势")
+    output_logger.log("\n查询搜索：")
+    output_logger.log("- 帮我搜索和总结近两年关于大模型的高被引论文")
+    output_logger.log("- 目前热门的开源Agent框架有哪些？")
+
+def pretty_print(event):
+    """美化输出事件内容"""
+    if "planner" in event:
+        output_logger.log("【规划任务步骤】")
+        for idx, step in enumerate(event["planner"]["plan"], 1):
+            output_logger.log(f"{step}")
+    
+    if "agent" in event:
+        output_logger.log("【步骤执行结果】")
+        for step, result in event["agent"]["past_steps"]:
+            output_logger.log(f"步骤: {step}")
+            output_logger.log(f"结果: {result}")
+    
+    if "replan" in event:
+        if "plan" in event["replan"]:
+            output_logger.log("【重新规划任务】")
+            for idx, step in enumerate(event["replan"]["plan"], 1):
+                output_logger.log(f"{step}")
+        if "response" in event["replan"]:
+            output_logger.log("【最终结果】")
+            output_logger.log(f"{event['replan']['response']}")
 
 async def main():
-    # 只在主线程中注册信号处理
-    # if threading.current_thread() is threading.main_thread():
-    #     signal.signal(signal.SIGINT, handle_interrupt)
-    #     signal.signal(signal.SIGTERM, handle_interrupt)
+    output_logger.log("🤖 EasyAgent 智能体")
+    output_logger.log("EasyAgent是一个基于langchain的Planning Agent，接入了网页搜索、股票查询、arxiv数据库等MCP工具")
     
-    client = None
-    try:
-        output_logger.log("正在初始化MCP客户端...")
-        client = MultiServerMCPClient(
-            {
-                "mcp-akshare": {
-                    "command": "uvx",
-                    "args": ["src/tool/mcp-akshare"],
-                },
-                "tavily-mcp": {
-                    "command": "npx",
-                    "args": ["-y", "tavily-mcp"],
-                    "env": {"TAVILY_API_KEY": "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"},
-                    "autoApprove": []
-                },
+    # 检查API key
+    if not check_api_key():
+        output_logger.log("⚠️ 请先在config/llm_config.json中配置您的Deepseek API Key")
+        return
+    if not if_api_valid():
+        output_logger.log("⚠️ 请设置格式正确的Deepseek API Key，例如sk-xxxxxxx")
+        return
 
-                "amap-amap-sse": {
-                    "url": "https://mcp.amap.com/sse?key=1253cf9b3968fc48fd39b06b02fa5211",
-                    "transport": "sse",
-                },
-
-                "bing-cn-mcp-server": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/bf53f78667f54f",
-                    "transport": "sse",
-                    },
-                "akshare-one-mcp": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/2546d617f8e445",
-                    "transport": "sse",
-                    },
-
-                "mcp-yahoo-finance": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/44b98b6a7e8046",
-                    "transport": "sse",
-                    },
-                "fetch": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/5c537afd52804f",
-                    "transport": "sse",
-                    },
-
-                "arxiv-mcp-server": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/5da5bf0f0c604d",
-                    "transport": "sse",
-                    },
-                "mcp-server-chart": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/2b2af34ca5794a",
-                    "transport": "sse",
-                    },
-                "time-mcp": {
-                    "type": "sse",
-                    "url": "https://mcp.api-inference.modelscope.cn/sse/5bd40c9faeea44",
-                    "transport": "sse",
-                    }
-            }
-        )
+    # 加载MCP配置
+    mcp_config = load_mcp_config()
+    if not mcp_config:
+        output_logger.log("⚠️ 未找到MCP配置文件，将使用默认配置")
+        mcp_config = {
+            "mcp-akshare": {
+                "command": "uvx",
+                "args": ["src/tool/mcp-akshare"],
+            },
+            "tavily-mcp": {
+                "command": "npx",
+                "args": ["-y", "tavily-mcp"],
+                "env": {"TAVILY_API_KEY": "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"},
+                "autoApprove": []
+        }
+        }
+    client = MultiServerMCPClient(mcp_config)
+    tools = client.get_tools()
+    
+    # 获取所有可用的服务名称
+    enabled_services = list(mcp_config.keys())
+    
+    # 打印示例任务
+    print_examples()
+    
+    while True:
+        output_logger.log("\n" + "=" * 80)
+        user_input = input("\n请输入您的任务（输入exit退出）：")
         
-        async with client:
-            output_logger.log("MCP客户端初始化完成")
-            output_logger.log("正在获取工具...")
-            tools = client.get_tools()
-            import os
-            # from langchain_tavily import TavilySearch
-            # os.environ["TAVILY_API_KEY"]="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"
-            # tools +=[TavilySearch(max_results=5,topic="general")]
-            output_logger.log(f"成功获取 {len(tools)} 个工具")
+        if user_input.lower() == 'exit':
+            #output_logger.log("程序结束")
+            break
             
-            output_logger.log("正在创建工作流...")
-            app = create_workflow(tools)
-            output_logger.log("准备接收用户输入")
-
-            while True:
-                output_logger.log("\n" + "#" * 80)
-                config = {"recursion_limit": 50}
-                user_input = input("输入任务(输入exit退出)，如“请帮我分析新能源领域的股票”\n您的任务： ")
-                if user_input == "exit":
-                    output_logger.log("程序结束")
-                    break
-                inputs = {"input": user_input}
-                async for event in app.astream(inputs, config=config):
-                    pretty_print(event)
-                output_logger.log("#" * 80)
-
-    except Exception as e:
-        error_msg = f"程序发生异常: {str(e)}\n{traceback.format_exc()}"
-        output_logger.log(error_msg)
-        raise
-    finally:
-        if client:
-            await cleanup(client)
+        if not user_input.strip():
+            continue
+            
+        output_logger.log(f"\n正在处理任务：{user_input}")
+        
+        # 初始化工作流，使用所有可用的服务
+        workflow = create_workflow(tools, enabled_services)
+        
+        # 运行工作流
+        config = {"recursion_limit": 50}
+        inputs = {"input": user_input}
+        
+        try:
+            async for event in workflow.astream(inputs, config=config):
+                pretty_print(event)
+        except Exception as e:
+            output_logger.log(f"处理任务时出错：{str(e)}")
+        
+        output_logger.log("\n"+"=" * 80)
 
 if __name__ == "__main__":
     try:
-        output_logger.log("程序启动")
         asyncio.run(main())
     except KeyboardInterrupt:
-        output_logger.log("程序被用户中断")
+        output_logger.log("\n程序被用户中断")
     except Exception as e:
-        error_msg = f"程序异常终止: {str(e)}\n{traceback.format_exc()}"
-        output_logger.log(error_msg)
-        raise
+        output_logger.log(f"程序异常终止: {str(e)}")
     finally:
         output_logger.log("程序结束") 
