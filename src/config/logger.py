@@ -17,9 +17,8 @@ class OutputLogger:
     def log(self, message):
         """记录日志信息"""
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        log_message = f"{timestamp} - {message}"
-        self.logger.info(log_message)
-        print(log_message)  # 同时输出到控制台
+        #log_message = f"{timestamp} - {message}"
+        self.logger.info(message)
 
 # 初始化全局日志记录器
 output_logger = OutputLogger()
