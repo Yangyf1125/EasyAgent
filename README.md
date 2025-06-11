@@ -55,21 +55,24 @@ Configure various MCP tools and services in `config/mcp_config.json`:
 Currently using Modelscope's remote MCP server, please modify as needed
 
 ## 💻 Usage
+Provides both command-line and web interfaces.
 
-EasyAgent provides a simple web interface that can be deployed locally or accessed directly through the [web service](https://easyagentyyf.streamlit.app)
+#### Command Line
 
-#### Web Interface
+Start the command-line interface:
+```bash
+python main.py
+```
+
+#### Web UI
+Provides a simple web interface that can be deployed locally or accessed directly through the [web service](https://easyagentyyf.streamlit.app) deployed on Streamlit Cloud.
 
 1. Start the web service:
 ```bash
 streamlit run Homepage.py
 ```
 
-2. Open the address shown in the terminal (e.g., http://localhost:8501)
-
-3. Enter your task in the web interface, and the system will process and display the results
-
-4. The web interface provides a more user-friendly experience and visual presentation
+2. Access the web interface at  the URL provided in your terminal(e.g.,`http://localhost:8501`)
 
 ## 📁 Project Structure
 
