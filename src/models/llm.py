@@ -4,6 +4,7 @@ from langchain_core.prompts import ChatPromptTemplate
 import os
 import json
 import streamlit as st
+from datetime import datetime
 
 def load_llm_config():
     """加载LLM配置文件"""
@@ -29,18 +30,22 @@ llm = ChatDeepSeek(
     temperature=deepseek_config.get('temperature', 0)
 )
 
+
 def get_prompt(enabled_services):
     """根据启用的服务生成prompt"""
+    timestamp = "current date is " + datetime.now().strftime('%Y-%m-%d')
     tools_description = get_tools_description(enabled_services)
-    return REACT_PROMPT.format(tools_description)
+    return timestamp+REACT_PROMPT.format(tools_description)
 
 def get_planner_prompt():
     """获取规划器prompt"""
+    timestamp = "current date is " + datetime.now().strftime('%Y-%m-%d')
     return ChatPromptTemplate.from_messages([
-        ("system", PLANNER_PROMPT),
+        ("system", timestamp+PLANNER_PROMPT),
         ("placeholder", "{messages}"),
     ])
 
 def get_replanner_prompt():
     """获取重规划器prompt"""
-    return ChatPromptTemplate.from_template(REPLANNER_PROMPT) 
+    timestamp = "current date is " + datetime.now().strftime('%Y-%m-%d')
+    return ChatPromptTemplate.from_template(timestamp+REPLANNER_PROMPT) 
