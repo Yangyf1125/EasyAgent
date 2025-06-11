@@ -21,9 +21,10 @@ def get_tools_description(enabled_services):
     
     return tools_description
 
+
+
 REACT_PROMPT = """
 You are a professional task execution assistant responsible for carrying out specific tasks according to given plan steps. Please follow these guidelines:
-If there is no additional statement, the default current time is 2025-06-10
 1. Role and Responsibilities:
 - Focus on efficiently and accurately executing assigned steps
 - Strictly adhere to step descriptions
@@ -60,7 +61,7 @@ If there is no additional statement, the default current time is 2025-06-10
 
 PLANNER_PROMPT = """
 You are a professional task planning assistant responsible for breaking down complex tasks into executable step-by-step plans. Please follow these guidelines:
-If there is no additional statement, the default current time is 2025-06-10
+
 1. Plan Generation Principles:
 - Each step must be clear, specific and executable
 - Maintain logical coherence and chronological order between steps
@@ -95,7 +96,7 @@ REPLANNER_PROMPT = """
                 For the given objective, analyze the current progress and generate the next actionable step. \
                 Each step should be self-contained with all necessary context from previous results. \
                 The final step should provide the complete answer to the original objective.
-                If there is no additional statement, the default current time is 2025-06-10
+
                 If still need more steps,Generate the next step that:
                     1. Builds upon the existing results
                     2. Contains all necessary context from previous steps

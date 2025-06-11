@@ -252,7 +252,7 @@ def main():
         2. 非流式输出下响应时间可能较长
         3. 仅用于学习研究，不适用于实际交易
         """)
-        st.warning("⚠️ streamlit服务器挂载的Web端无法获取时间，默认时间为2025年6月10日，请注意在任务中包含具体的时间")
+        #st.warning("⚠️ 暂时仅支持deepseek")
         #st.markdown("----")
         st.markdown("<p style='font-size: 14px;'><strong>Author:</strong> YYF, u3621301@connect.hku.hk</p>", unsafe_allow_html=True)
         st.markdown("----")
