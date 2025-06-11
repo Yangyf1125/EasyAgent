@@ -184,6 +184,14 @@ def main():
         tools = client.get_tools()
 
         if prompt:
+            # 重新检查API key
+            if not check_api_key():
+                st.warning("⚠️ 请先在设置页面配置您的Deepseek API Key\n\n请点击左侧导航栏的 🐋 Deepseek 进行配置")
+                return
+            if not if_api_valid():
+                st.warning("⚠️ 请设置格式正确的Deepseek API Key，例如sk-xxxxxxx\n\n请点击左侧导航栏的 🐋 Deepseek 进行配置")
+                return
+                
             # 清空之前的内容
             clear_previous_task()
             
@@ -255,6 +263,7 @@ def main():
         #st.warning("⚠️ 暂时仅支持deepseek")
         #st.markdown("----")
         st.markdown("<p style='font-size: 14px;'><strong>Author:</strong> YYF, u3621301@connect.hku.hk</p>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size: 14px;'><strong>GitHub:</strong> <a href='https://github.com/Yangyf1125/EasyAgent' target='_blank'>EasyAgent Repository</a></p>", unsafe_allow_html=True)
         st.markdown("----")
         # 使用expander包装MCP服务设置
         with st.expander("🔧 MCP服务设置", expanded=False):

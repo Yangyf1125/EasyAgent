@@ -1,7 +1,7 @@
 from langgraph.prebuilt import create_react_agent
 from langgraph.graph import StateGraph, START, END
 from src.config.logger import output_logger
-from src.models.llm import llm, get_prompt, get_planner_prompt, get_replanner_prompt
+from src.models.llm import get_llm, get_prompt, get_planner_prompt, get_replanner_prompt
 from src.types.models import PlanExecute, Plan, Act, Response
 import traceback
 
@@ -89,6 +89,7 @@ class WorkflowManager:
         try:
             output_logger.log("正在初始化Agent执行器...")
             prompt = get_prompt(enabled_services)
+            llm = get_llm()  # 获取新的LLM实例
             self.agent_executor = create_react_agent(llm, tools, prompt=prompt)
             
             output_logger.log("正在初始化规划器...")
