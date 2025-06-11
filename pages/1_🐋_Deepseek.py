@@ -83,8 +83,8 @@ with st.form(key="deepseek_settings_form"):
     col1, col2 = st.columns(2)
     with col1:
         submit_button = st.form_submit_button(label="保存设置")
-    with col2:
-        use_default_button = st.form_submit_button(label="使用默认API Key")
+    # with col2:
+    #     use_default_button = st.form_submit_button(label="使用默认API Key")
     
     if submit_button:
         # 更新session state
@@ -101,14 +101,14 @@ with st.form(key="deepseek_settings_form"):
         st.success("设置已保存！")
         st.rerun()  # 重新加载页面以更新显示
     
-    if use_default_button:
-        default_config = {
-            "api_key": "sk-a31ca91a3d624c27a9406d9a9596b882",
-            "base_url": "https://api.deepseek.com",
-            "model": "deepseek-chat",
-            "temperature": 0.0
-        }
-        st.session_state["DEEPSEEK_CONFIG"] = default_config
-        save_config(default_config)
-        st.success("已切换到默认API Key！")
-        st.rerun()
+    # if use_default_button:
+    #     default_config = {
+    #         "api_key": "<your api key>",
+    #         "base_url": "https://api.deepseek.com",
+    #         "model": "deepseek-chat",
+    #         "temperature": 0.0
+    #     }
+    #     st.session_state["DEEPSEEK_CONFIG"] = default_config
+    #     save_config(default_config)
+    #     st.success("已切换到默认API Key！")
+    #     st.rerun()

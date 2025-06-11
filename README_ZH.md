@@ -8,11 +8,12 @@ EasyAgent 是一个基于 LangChain 和 LangGraph 构建的入门级智能代理
 
 - 🤖 基于 LangChain 和 LangGraph 的智能工作流
 - 🔧 集成多种 MCP 工具和服务：
-  - Tavily 搜索服务
-  - AKShare 金融数据服务
+  - 网络搜索服务
+  - AKShare A股数据
+  - Yahoo Finance 雅虎财经数据
   - ArXiv 研究论文库
   - 高德地理服务
-  - Yahoo Finance 金融数据等
+
 - 📊 金融数据分析支持
 - 🔍 智能搜索能力
 - 🎨 简洁直观的 Web 界面
@@ -20,7 +21,7 @@ EasyAgent 是一个基于 LangChain 和 LangGraph 构建的入门级智能代理
 ## 🚀 系统要求
 
 - Python 3.12
-- Node.js（可选，用于运行某些 MCP 服务）
+- Node.js（可选，可能会用于运行某些 MCP 服务）
 
 ## 📦 安装步骤
 
@@ -34,6 +35,24 @@ cd EasyAgent
 ```bash
 pip install -r requirements.txt
 ```
+## ⚙️ Configuration
+
+#### 1.LLM Configuration
+在网页端中的🐋Deepseek页面或 `config/llm_config.json` 中配置LLM相关设置,目前暂时仅支持Deepseek：
+  - `api_key`: 您的Deepseek API密钥
+
+#### 2.MCP Configuration
+在 `config/mcp_config.json` 中配置各种MCP工具和服务：
+```json
+{
+  "server1": {
+    "type": "sse",
+    "url": "http://localhost:8000/sse"
+  }
+}
+    // 其他MCP服务配置...
+```
+目前使用的是Modelscope的远程MCP服务器，如有需要请自行修改
 
 ## 💻 使用方法
 
@@ -86,5 +105,6 @@ EasyAgent/
 ## 📧 联系方式
 
 u3621301@connect.hku.hk
+yangyf1125@gmail.com
 
 

@@ -8,11 +8,11 @@ EasyAgent is a beginner-friendly intelligent agent system built on LangChain and
 
 - 🤖 Intelligent workflow based on LangChain and LangGraph
 - 🔧 Integration of multiple MCP tools and services:
-  - Tavily search service
-  - AKShare financial data service
+  - Web search service
+  - AKShare A-share data
+  - Yahoo Finance financial data
   - ArXiv research paper library
   - Amap geographic service
-  - Yahoo Finance financial data
 - 📊 Financial data analysis support
 - 🔍 Intelligent search capabilities
 - 🎨 Simple and intuitive web interface
@@ -34,6 +34,25 @@ cd EasyAgent
 ```bash
 pip install -r requirements.txt
 ```
+
+## ⚙️ Configuration
+
+#### 1. LLM Configuration
+Configure LLM settings in the 🐋Deepseek page of the web interface or in `config/llm_config.json`. Currently only Deepseek is supported:
+  - `api_key`: Your Deepseek API key
+
+#### 2. MCP Configuration
+Configure various MCP tools and services in `config/mcp_config.json`:
+```json
+{
+  "server1": {
+    "type": "sse",
+    "url": "http://localhost:8000/sse"
+  }
+}
+    // Other MCP service configurations...
+```
+Currently using Modelscope's remote MCP server, please modify as needed
 
 ## 💻 Usage
 
@@ -85,4 +104,5 @@ Issues and Pull Requests are welcome to help improve the project.
 
 ## 📧 Contact
 
-u3621301@connect.hku.hk 
+u3621301@connect.hku.hk
+yangyf1125@gmail.com 
