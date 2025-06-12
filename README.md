@@ -1,4 +1,3 @@
-
 ```ascii
  _______     ___           _______.____    ____  ___       _______  _______ .__   __. .___________.
 |   ____|   /   \         /       |\   \  /   / /   \     /  _____||   ____||  \ |  | |           |
@@ -6,13 +5,16 @@
 |   __|   /  /_\  \       \   \      \_    _/ /  /_\  \  |  | |_ | |   __|  |  . `  |     |  |     
 |  |____ /  _____  \  .----)   |       |  |  /  _____  \ |  |__| | |  |____ |  |\   |     |  |     
 |_______/__/     \__\ |_______/        |__| /__/     \__\ \______| |_______||__| \__|     |__|     
-           
+                                                                                                   
 ```
+
 # EasyAgent
+
+[![WEB EASYAGENT](https://img.shields.io/badge/Web-EASYAGENT-2ea44f?style=for-the-badge&logo=streamlit&logoColor=white)](https://easyagentyyf.streamlit.app)
 
 [English](README.md) | [简体中文](README_ZH.md)
 
-EasyAgent is a beginner-friendly intelligent agent system built on LangChain and LangGraph, integrating various practical MCP tools and services to help users complete various basic tasks.
+EasyAgent is a beginner-friendly intelligent agent project built on LangChain and LangGraph, integrating various practical MCP tools and services to help users complete various basic tasks.
 
 ## ✨ Main Features
 

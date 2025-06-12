@@ -9,10 +9,10 @@
            
 ```
 # EasyAgent
-
+[![WEB EASYAGENT](https://img.shields.io/badge/Web-EASYAGENT-2ea44f?style=for-the-badge&logo=streamlit&logoColor=white)](https://easyagentyyf.streamlit.app)
 [English](README.md) | [简体中文](README_ZH.md)
 
-EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，集成了多种实用的 MCP 工具和服务，帮助用户完成各种基本的任务。
+EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理项目，集成了多种实用的 MCP 工具和服务，帮助用户完成各种基本的任务。
 
 ## ✨ 主要特性
 
