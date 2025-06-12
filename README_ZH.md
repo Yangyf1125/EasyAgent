@@ -35,13 +35,13 @@ cd EasyAgent
 ```bash
 pip install -r requirements.txt
 ```
-## ⚙️ Configuration
+## ⚙️ 参数配置
 
-#### 1.LLM Configuration
+#### 1.LLM 配置
 在网页端中的🐋Deepseek页面或 `config/llm_config.json` 中配置LLM相关设置,目前暂时仅支持Deepseek：
   - `api_key`: 您的Deepseek API密钥
 
-#### 2.MCP Configuration
+#### 2.MCP 配置
 在 `config/mcp_config.json` 中配置各种MCP工具和服务：
 ```json
 {

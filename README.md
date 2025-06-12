@@ -55,11 +55,11 @@ Configure various MCP tools and services in `config/mcp_config.json`:
 Currently using Modelscope's remote MCP server, please modify as needed
 
 ## 💻 Usage
-Provides both command-line and web interfaces.
+Provides both terminal and web interfaces.
 
-#### Command Line
+#### Terminal
 
-Start the command-line interface:
+Start the terminal interface:
 ```bash
 python main.py
 ```
