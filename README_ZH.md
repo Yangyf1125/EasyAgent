@@ -120,7 +120,7 @@ EasyAgent/
 
 ## 📧 联系方式
 
-u3621301@connect.hku.hk
+u3621301@connect.hku.hk  
 yangyf1125@gmail.com
 
 

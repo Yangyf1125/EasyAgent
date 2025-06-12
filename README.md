@@ -120,5 +120,5 @@ Issues and Pull Requests are welcome to help improve the project.
 
 ## 📧 Contact
 
-u3621301@connect.hku.hk
+u3621301@connect.hku.hk  
 yangyf1125@gmail.com 
