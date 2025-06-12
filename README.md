@@ -13,11 +13,12 @@ EasyAgent is a beginner-friendly intelligent agent system built on LangChain and
   - Yahoo Finance financial data
   - ArXiv research paper library
   - Amap geographic service
+  - ...
 - 📊 Financial data analysis support
 - 🔍 Intelligent search capabilities
 - 🎨 Simple and intuitive web interface
 
-## 🚀 System Requirements
+## 🚀 Env Requirements
 
 - Python 3.12
 - Node.js (optional, for running certain MCP services)

@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README_ZH.md)
 
-EasyAgent 是一个基于 LangChain 和 LangGraph 构建的入门级智能代理系统，集成了多种实用的 MCP 工具和服务，帮助用户完成各种基础任务。
+EasyAgent 是一个基于 LangChain 和 LangGraph 构建的智能代理系统，集成了多种实用的 MCP 工具和服务，帮助用户完成各种基本的任务。
 
 ## ✨ 主要特性
 
@@ -13,12 +13,13 @@ EasyAgent 是一个基于 LangChain 和 LangGraph 构建的入门级智能代理
   - Yahoo Finance 雅虎财经数据
   - ArXiv 研究论文库
   - 高德地理服务
+  - ...
 
 - 📊 金融数据分析支持
 - 🔍 智能搜索能力
 - 🎨 简洁直观的 Web 界面
 
-## 🚀 系统要求
+## 🚀 环境要求
 
 - Python 3.12
 - Node.js（可选，可能会用于运行某些 MCP 服务）
