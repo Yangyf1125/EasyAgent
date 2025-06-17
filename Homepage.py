@@ -118,16 +118,32 @@ def get_selected_services():
         if st.session_state.get(f"service_{service}", True)
     ]
 
+def load_language_config():
+    """加载语言配置"""
+    try:
+        with open('config/language_config.json', 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        st.error(f"Failed to load language config: {str(e)}")
+        return {}
+
+def get_text(key):
+    """获取当前语言的文本"""
+    if "language" not in st.session_state:
+        st.session_state["language"] = "zh"
+    
+    language_config = load_language_config()
+    return language_config.get(st.session_state["language"], {}).get(key, key)
+
 def main():
     # 设置页面配置
     st.set_page_config(page_title="EasyAgent Web Interface", layout="wide")
 
-    # 设置标题
-    st.title("🤖 EasyAgent 智能体")
-
     # 初始化session state
     if "messages" not in st.session_state:
         st.session_state["messages"] = []
+    if "language" not in st.session_state:
+        st.session_state["language"] = "zh"
     
     # 初始化服务状态
     initialize_service_states()
@@ -135,34 +151,81 @@ def main():
     # 创建一个空的占位符用于显示加载状态
     loading_placeholder = st.empty()
 
+    # 添加侧边栏说明
+    with st.sidebar:
+        # 添加语言切换
+        language = st.selectbox(
+            "Language / 语言",
+            ["中文", "English"],
+            index=0 if st.session_state["language"] == "zh" else 1,
+            key="language_selector"
+        )
+        
+        # 检查语言是否改变
+        new_language = "zh" if language == "中文" else "en"
+        if new_language != st.session_state["language"]:
+            st.session_state["language"] = new_language
+            st.rerun()  # 立即重新运行整个应用
+        
+        st.header(get_text("instructions"))
+        st.markdown(f"""
+        {get_text('instruction_1')}
+        {get_text('instruction_2')}
+        {get_text('instruction_3')}
+        """)
+        
+        st.markdown("<p style='font-size: 14px;'><strong>Author:</strong> YYF, u3621301@connect.hku.hk</p>", unsafe_allow_html=True)
+        st.markdown("<p style='font-size: 14px;'><strong>GitHub:</strong> <a href='https://github.com/Yangyf1125/EasyAgent' target='_blank'>EasyAgent Repository</a></p>", unsafe_allow_html=True)
+        st.markdown("----")
+        
+        # 使用expander包装MCP服务设置
+        with st.expander(get_text("mcp_settings"), expanded=False):
+            st.markdown(f"### {get_text('select_services')}")
+            service_descriptions = get_mcp_service_descriptions()
+            
+            # 初始化所有服务的状态
+            initialize_service_states()
+            
+            # 为每个服务创建开关
+            for service, description in service_descriptions.items():
+                st.toggle(
+                    f"{service} - {description}",
+                    key=f"service_{service}"
+                )
+            
+            st.markdown(get_text("api_key_note"))
+
     # 创建主容器
     with st.container():
-        st.header("Welcome!")
-        st.markdown("EasyAgent是一个基于langchain的Planning Agent，接入了网页搜索、股票查询、arxiv数据库等MCP工具")
+        st.title(get_text("title"))
+        st.header(get_text("welcome"))
+        st.markdown(get_text("description"))
         
         # 检查API key
         if not check_api_key():
-            st.warning("⚠️ 请先在设置页面配置您的Deepseek API Key\n\n请点击左侧导航栏的 🐋 Deepseek 进行配置")
+            st.warning(get_text("api_warning"))
             return
         if not if_api_valid():
-            st.warning("⚠️ 请设置格式正确的Deepseek API Key，例如sk-xxxxxxx\n\n请点击左侧导航栏的 🐋 Deepseek 进行配置")
+            st.warning(get_text("api_format_warning"))
             return
 
         # 添加清空按钮
-        add_clear_button()
+        if st.button(get_text("new_task"), help=get_text("task_help")):
+            clear_previous_task()
+            st.rerun()
 
         # 用户输入
-        prompt = st.chat_input("请输入您的任务...")
+        prompt = st.chat_input(get_text("input_placeholder"))
         
         # 添加示例提示
-        with st.expander("💡 点击查看任务示例 "):
-            st.markdown("""
-            **股票分析：**
+        with st.expander(get_text("examples")):
+            st.markdown(f"""
+            **{get_text('stock_analysis')}**
             - 请帮我分析近期新能源股票的情况
             - 帮我获取比亚迪的涨跌情况
             - 分析一下近期的A股市场走势
             
-            **查询搜索：**
+            **{get_text('search_query')}**
             - 帮我搜索和总结近两年关于大模型的高被引论文
             - 目前热门的开源Agent框架有哪些？
             """)
@@ -243,36 +306,6 @@ def main():
             
             # 在 Streamlit 中运行异步代码
             asyncio.run(run_agent_async())
-
-    # 添加侧边栏说明
-    with st.sidebar:
-        st.header("使用说明")
-        st.markdown("""
-        1. 在输入框中输入，Agent会为您规划任务
-        2. 非流式输出下响应时间可能较长
-        3. 仅用于学习研究，不适用于实际交易
-        """)
-        #st.warning("⚠️ streamlit服务器挂载的Web端无法获取时间，默认时间为2025年6月10日，请注意在任务中包含具体的时间")
-        #st.markdown("----")
-        st.markdown("<p style='font-size: 14px;'><strong>Author:</strong> YYF, u3621301@connect.hku.hk</p>", unsafe_allow_html=True)
-        st.markdown("<p style='font-size: 14px;'><strong>GitHub:</strong> <a href='https://github.com/Yangyf1125/EasyAgent' target='_blank'>EasyAgent Repository</a></p>", unsafe_allow_html=True)
-        st.markdown("----")
-        # 使用expander包装MCP服务设置
-        with st.expander("🔧 MCP服务设置", expanded=False):
-            st.markdown("### 选择要启用的MCP服务：")
-            service_descriptions = get_mcp_service_descriptions()
-            
-            # 初始化所有服务的状态
-            initialize_service_states()
-            
-            # 为每个服务创建开关
-            for service, description in service_descriptions.items():
-                st.toggle(
-                    f"{service} - {description}",
-                    key=f"service_{service}"
-                )
-            
-            st.markdown("所有远程托管MCP使用的均是限额的默认API_KEY\n\n如遇问题或需添加其他工具，请在mcp_config.json中修改")
 
 if __name__ == "__main__":
     main() 
