@@ -76,7 +76,7 @@ def pretty_print(event):
             st.session_state["messages"].append({"role": "assistant", "content": "【最终结果】"})
             st.session_state["messages"].append({"role": "assistant", "content": f"{event['replan']['response']}"})
             with st.chat_message("assistant"):
-                st.markdown("### 【最终结果】")
+                st.markdown("### 【任务完成】")
                 st.markdown(f"{event['replan']['response']}")
 
 def load_mcp_config():
